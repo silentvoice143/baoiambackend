@@ -1,35 +1,25 @@
 const express = require("express");
 const path = require("path");
 const router = express.Router();
-const userController = require("../controller/userController");
+const userController = require("../controller/authController");
 const mailController = require("../controller/mailController");
 
 const middleWare = require("../middleware/auth");
 
 router.get("/", (req, res) => {
   // res.json("hiii");
-  res.render("index");
+  res.render("home");
 });
 
 router.get("/dashboard", (req, res) => {
-  const parentDirectory = path.join(__dirname, "..");
-  res.sendFile("index.html");
+  res.render("dashboard");
 });
-
-//===============================userapi============================================//
-
-router.post("/register", userController.createUser);
-router.post("/login", userController.loginUser);
-router.get(
-  "/user/:userId/profile",
-  middleWare.authentication,
-  middleWare.authorization,
-  userController.getuserprofile
-);
 
 //==============================otp generator======================================//
 
 router.post("/getOTP", userController.getOTP);
+
+//=============================booksession=======================================//
 router.post("/booksession", userController.booksession);
 
 //==============================mail==========================================//

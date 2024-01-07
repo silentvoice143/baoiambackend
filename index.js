@@ -1,14 +1,23 @@
 const express = require("express");
-const route = require("./routes/route.js");
+const route = require("./routes/generalRoutes.js");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const bodyParser = require("body-parser");
+
+//===============importing all routes===============//
+const authRoutes = require("./routes/authRoute.js");
+const userRoutes = require("./routes/userRoute");
+const adminRoutes = require("./routes/adminRoute.js");
+const courseRoutes = require("./routes/courseRoute.js");
+const generalRoutes = require("./routes/generalRoutes.js");
 
 const app = express();
 
 app.use(express.json());
 
-// app.use("view engine", "ejs");
+app.set("view engine", "ejs");
+
+app.use(express.static("public"));
 
 // app.set("views", __dirname + "views");
 
@@ -22,6 +31,15 @@ mongoose
   .connect("mongodb://0.0.0.0:27017/baoiam")
 
   .then(() => console.log("MongoDb is connected"));
+
+//==============defining all routes==============//
+
+app.use("/", generalRoutes);
+app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
+app.use("/course", courseRoutes);
+app.use("/user", userRoutes);
+
 let PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
